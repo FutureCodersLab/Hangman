@@ -1,189 +1,171 @@
-import { options } from "./words.js";
-
-const letterContainer = document.getElementById("letter-container");
-const optionsContainer = document.getElementById("options-container");
-const userInputSection = document.getElementById("user-input-section");
-const newGameContainer = document.getElementById("new-game-container");
-const newGameButton = document.getElementById("new-game-button");
-const canvas = document.getElementById("canvas");
-const resultText = document.getElementById("result-text");
+import { categories } from "./words.js";
+import {
+    drawHead,
+    drawBody,
+    drawLeftArm,
+    drawRightArm,
+    drawLeftLeg,
+    drawRightLeg,
+    drawInitialStructure,
+    clearCanvas,
+} from "./canvas.js";
 
 let winCount = 0;
 let count = 0;
 let chosenWord = "";
 
+const options = document.getElementById("options");
+const letterContainer = document.getElementById("letter-container");
+const newGameContainer = document.getElementById("new-game-container");
+const newGameButton = document.getElementById("new-game-button");
+const resultText = document.getElementById("result-text");
+
+document.addEventListener("DOMContentLoaded", () => {
+    displayOptions();
+    createAlphabetButtons();
+    drawInitialStructure();
+    newGameButton.addEventListener("click", resetGame);
+});
+
 const displayOptions = () => {
-    optionsContainer.innerHTML += `<h3>Please Select An Option</h3>`;
-    let buttonCon = document.createElement("div");
-    for (let value in options) {
-        buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;
-    }
-    optionsContainer.appendChild(buttonCon);
+    Object.keys(categories).forEach((category) => {
+        const button = createCategoryButton(category);
+        options.appendChild(button);
+    });
 };
 
-const blocker = () => {
-    let optionsButtons = document.querySelectorAll(".options");
-    let letterButtons = document.querySelectorAll(".letters");
-    optionsButtons.forEach((button) => {
-        button.disabled = true;
+const createCategoryButton = (category) => {
+    const button = document.createElement("button");
+    button.className = "category";
+    button.textContent = category;
+    button.addEventListener("click", () => selectWordForCategory(category));
+    return button;
+};
+
+const createAlphabetButtons = () => {
+    const alphabet = Array.from({ length: 26 }, (_, i) =>
+        String.fromCharCode(65 + i)
+    );
+    alphabet.forEach((letter) => {
+        const button = document.createElement("button");
+        button.className = "letter";
+        button.textContent = letter;
+        button.addEventListener("click", selectLetter);
+        letterContainer.appendChild(button);
     });
-    letterButtons.forEach((button) => {
-        button.disabled = true;
+};
+
+const selectWordForCategory = (selectedCategory) => {
+    const hiddenWord = document.getElementById("hidden-word");
+    updateCategoryButtons(selectedCategory);
+    letterContainer.classList.remove("hide");
+    hiddenWord.textContent = "";
+
+    chosenWord = getRandomWord(selectedCategory);
+    displayHiddenWord(hiddenWord);
+};
+
+const updateCategoryButtons = (selectedCategory) => {
+    document.querySelectorAll(".category").forEach((button) => {
+        button.textContent.toLowerCase() === selectedCategory
+            ? button.classList.add("active")
+            : (button.disabled = true);
     });
+};
+
+const getRandomWord = (category) => {
+    const wordsArray = categories[category];
+    const randomIndex = Math.floor(Math.random() * wordsArray.length);
+    return wordsArray[randomIndex].toUpperCase();
+};
+
+const displayHiddenWord = (hiddenWordElement) => {
+    hiddenWordElement.innerHTML = chosenWord
+        .split("")
+        .map(() => '<span class="dashes">-</span>')
+        .join("");
+};
+
+const selectLetter = (e) => {
+    const selectedLetter = e.target;
+    const wordLetters = Array.from(chosenWord);
+    const dashes = document.querySelectorAll(".dashes");
+
+    if (wordLetters.includes(selectedLetter.textContent)) {
+        revealLetters(wordLetters, selectedLetter.textContent, dashes);
+        if (winCount === wordLetters.length) {
+            displayResult(true);
+        }
+    } else {
+        count++;
+        drawMan(count);
+        if (count === 6) {
+            displayResult(false);
+        }
+    }
+    selectedLetter.disabled = true;
+};
+
+const revealLetters = (wordLetters, letter, dashes) => {
+    wordLetters.forEach((wordLetter, index) => {
+        if (wordLetter === letter) {
+            dashes[index].textContent = letter;
+            winCount++;
+        }
+    });
+};
+
+const displayResult = (isWin) => {
+    resultText.innerHTML = `
+        <h2 class="${isWin ? "win" : "lose"}">${
+        isWin ? "You Win!" : "You Lose!"
+    }</h2>
+        <p>The word was <span>${chosenWord}</span></p>
+    `;
+    disableGameControls();
+};
+
+const disableGameControls = () => {
+    document
+        .querySelectorAll(".category, .letter")
+        .forEach((button) => (button.disabled = true));
     newGameContainer.classList.remove("hide");
 };
 
-const generateWord = (optionValue) => {
-    let optionsButtons = document.querySelectorAll(".options");
-    optionsButtons.forEach((button) => {
-        if (button.textContent.toLowerCase() === optionValue) {
-            button.classList.add("active");
-        }
-        button.disabled = true;
-    });
-
-    letterContainer.classList.remove("hide");
-    userInputSection.textContent = "";
-
-    let optionArray = options[optionValue];
-    chosenWord = optionArray[Math.floor(Math.random() * optionArray.length)];
-    chosenWord = chosenWord.toUpperCase();
-    console.log(chosenWord);
-    let displayItem = chosenWord.replace(/./g, '<span class="dashes">-</span>');
-    userInputSection.innerHTML = displayItem;
+const drawMan = (count) => {
+    const drawFunctions = [
+        drawHead,
+        drawBody,
+        drawLeftArm,
+        drawRightArm,
+        drawLeftLeg,
+        drawRightLeg,
+    ];
+    if (count > 0 && count <= drawFunctions.length) {
+        drawFunctions[count - 1]();
+    }
 };
 
-const initializer = () => {
+const resetGame = () => {
     winCount = 0;
     count = 0;
+    chosenWord = "";
 
-    userInputSection.innerHTML = "";
-    optionsContainer.innerHTML = "";
-    letterContainer.classList.add("hide");
-    newGameContainer.classList.add("hide");
+    document.getElementById("hidden-word").textContent = "";
+
+    options.innerHTML = "";
     letterContainer.innerHTML = "";
+    letterContainer.classList.add("hide");
+    resultText.innerHTML = "";
+    newGameContainer.classList.add("hide");
 
-    for (let i = 65; i < 91; i++) {
-        let button = document.createElement("button");
-        button.classList.add("letters");
-        button.textContent = String.fromCharCode(i);
-        button.addEventListener("click", () => {
-            let charArray = chosenWord.split("");
-            let dashes = document.querySelectorAll(".dashes");
-            console.log(dashes);
-            if (charArray.includes(button.textContent)) {
-                charArray.forEach((char, index) => {
-                    if (char === button.textContent) {
-                        dashes[index].textContent = char;
-                        winCount++;
-                        if (winCount === charArray.length) {
-                            resultText.innerHTML = `
-                                <h2 class="win-msg">
-                                    You Win!
-                                </h2>
-                                <p>The word was <span>${chosenWord}</span></p>
-                            `;
-                            blocker();
-                        }
-                    }
-                });
-            } else {
-                count++;
-                drawMan(count);
-                if (count === 6) {
-                    resultText.innerHTML = `
-                        <h2 class="lose-msg">
-                            You Lose!
-                        </h2>
-                        <p>The word was <span>${chosenWord}</span></p>
-                    `;
-                    blocker();
-                }
-            }
-            button.disabled = true;
-        });
-        letterContainer.appendChild(button);
-    }
+    clearCanvas();
+
     displayOptions();
-    let { initialDrawing } = canvasCreator();
-    initialDrawing();
+    createAlphabetButtons();
+    drawInitialStructure();
+
+    document
+        .querySelectorAll(".category")
+        .forEach((button) => (button.disabled = false));
 };
-
-const canvasCreator = () => {
-    /** @type {CanvasRenderingContext2D} */
-    let context = canvas.getContext("2d");
-    context.beginPath();
-    context.strokeColor = "#000";
-    context.lineWidth = 2;
-
-    const drawLine = (fromX, fromY, toX, toY) => {
-        context.moveTo(fromX, fromY);
-        context.lineTo(toX, toY);
-        context.stroke();
-    };
-
-    const head = () => {
-        context.beginPath();
-        context.arc(70, 30, 10, 0, Math.PI * 2, true);
-        context.stroke();
-    };
-
-    const body = () => {
-        drawLine(70, 40, 70, 80);
-    };
-
-    const leftArm = () => {
-        drawLine(70, 50, 50, 70);
-    };
-
-    const rightArm = () => {
-        drawLine(70, 50, 90, 70);
-    };
-
-    const leftLeg = () => {
-        drawLine(70, 80, 50, 110);
-    };
-
-    const rightLeg = () => {
-        drawLine(70, 80, 90, 110);
-    };
-
-    const initialDrawing = () => {
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-        drawLine(10, 130, 130, 130);
-        drawLine(10, 10, 10, 131);
-        drawLine(10, 10, 70, 10);
-        drawLine(70, 10, 70, 20);
-    };
-
-    return { initialDrawing, head, body, leftArm, rightArm, leftLeg, rightLeg };
-};
-
-const drawMan = (count) => {
-    let { head, body, leftArm, rightArm, leftLeg, rightLeg } = canvasCreator();
-    switch (count) {
-        case 1:
-            head();
-            break;
-        case 2:
-            body();
-            break;
-        case 3:
-            leftArm();
-            break;
-        case 4:
-            rightArm();
-            break;
-        case 5:
-            leftLeg();
-            break;
-        case 6:
-            rightLeg();
-            break;
-        default:
-            break;
-    }
-};
-
-newGameButton.addEventListener("click", initializer);
-window.onload = initializer;
