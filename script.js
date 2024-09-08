@@ -29,17 +29,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const displayOptions = () => {
     Object.keys(categories).forEach((category) => {
-        const button = createCategoryButton(category);
+        const button = document.createElement("button");
+        button.className = "category";
+        button.textContent = category;
+        button.addEventListener("click", () => selectWordForCategory(category));
         options.appendChild(button);
     });
 };
 
-const createCategoryButton = (category) => {
-    const button = document.createElement("button");
-    button.className = "category";
-    button.textContent = category;
-    button.addEventListener("click", () => selectWordForCategory(category));
-    return button;
+const selectWordForCategory = (selectedCategory) => {
+    const hiddenWord = document.getElementById("hidden-word");
+    updateCategoryButtons(selectedCategory);
+    letterContainer.classList.remove("hide");
+    hiddenWord.textContent = "";
+
+    if (!chosenWord) chosenWord = getRandomWord(selectedCategory);
+    displayHiddenWord(hiddenWord);
 };
 
 const createAlphabetButtons = () => {
@@ -53,16 +58,6 @@ const createAlphabetButtons = () => {
         button.addEventListener("click", selectLetter);
         letterContainer.appendChild(button);
     });
-};
-
-const selectWordForCategory = (selectedCategory) => {
-    const hiddenWord = document.getElementById("hidden-word");
-    updateCategoryButtons(selectedCategory);
-    letterContainer.classList.remove("hide");
-    hiddenWord.textContent = "";
-
-    chosenWord = getRandomWord(selectedCategory);
-    displayHiddenWord(hiddenWord);
 };
 
 const updateCategoryButtons = (selectedCategory) => {
@@ -80,6 +75,7 @@ const getRandomWord = (category) => {
 };
 
 const displayHiddenWord = (hiddenWordElement) => {
+    hiddenWordElement.classList.add("active");
     hiddenWordElement.innerHTML = chosenWord
         .split("")
         .map(() => '<span class="dashes">-</span>')
@@ -116,20 +112,17 @@ const revealLetters = (wordLetters, letter, dashes) => {
 };
 
 const displayResult = (isWin) => {
-    resultText.innerHTML = `
-        <h2 class="${isWin ? "win" : "lose"}">${
-        isWin ? "You Win!" : "You Lose!"
-    }</h2>
-        <p>The word was <span>${chosenWord}</span></p>
-    `;
+    const h2 = document.querySelector("#result-text h2");
+    h2.textContent = isWin ? "You Win!" : "You Lose";
+
+    const p = document.querySelector("#result-text p");
+    p.innerHTML = `The chosen word was ${chosenWord}`;
     disableGameControls();
 };
 
 const disableGameControls = () => {
-    document
-        .querySelectorAll(".category, .letter")
-        .forEach((button) => (button.disabled = true));
-    newGameContainer.classList.remove("hide");
+    document.querySelector(".letter-container").style.pointerEvents = "none";
+    setTimeout(() => newGameContainer.classList.remove("hide"), 500);
 };
 
 const drawMan = (count) => {
@@ -152,11 +145,11 @@ const resetGame = () => {
     chosenWord = "";
 
     document.getElementById("hidden-word").textContent = "";
+    document.querySelector(".letter-container").style.pointerEvents = "all";
 
     options.innerHTML = "";
     letterContainer.innerHTML = "";
     letterContainer.classList.add("hide");
-    resultText.innerHTML = "";
     newGameContainer.classList.add("hide");
 
     clearCanvas();

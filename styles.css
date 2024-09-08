@@ -1,91 +1,136 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-* {
+
+:root {
+    --main-color: #68bab3;
+    --secondary-color: #d2e4e5;
+    --light-gray: #efefef;
+    --box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    --box-shadow2: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+body {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: Poppins;
-}
-body {
-    background-color: #f4c531;
+    font-family: "Poppins";
+    background-color: var(--main-color);
 }
 .container {
-    font-size: 16px;
     background-color: white;
-    width: 90vw;
-    max-width: 34em;
+    width: 400px;
     position: absolute;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    padding: 3em;
-    border-radius: 0.6em;
-    box-shadow: 0 1.2em 2.5em rgba(111, 85, 0, 0.25);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
 }
-#options-container {
+h3 {
     text-align: center;
 }
 #options-container div {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    margin: 1.2em 0 2.4em 0;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
 }
 #options-container button {
-    padding: 0.6em 1.2em;
+    padding: 10px 18px;
     border: 3px solid black;
     background-color: white;
-    color: black;
-    border-radius: 0.3em;
+    border-radius: 7px;
     text-transform: capitalize;
+    transition: 0.3s ease background-color;
+    cursor: pointer;
+    box-shadow: var(--box-shadow2);
 }
 #options-container button:disabled {
-    border: 3px solid #808080;
-    color: #808080;
-    background-color: #efefef;
+    border: 3px solid gray;
+    color: gray;
+    background-color: var(--light-gray);
 }
 #options-container button.active {
-    background-color: #f4c531;
-    border-radius: 3px solid black;
+    background-color: var(--secondary-color);
+    border: 3px solid black;
     color: black;
 }
 .letter-container {
-    width: 100%;
+    height: 120px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 0.6em;
+    flex-wrap: wrap;
+    gap: 10px;
+    opacity: 1;
+    pointer-events: all;
+    transition: 0.5s ease all;
 }
 #letter-container button {
-    height: 2.4em;
-    width: 2.4em;
-    border-radius: 0.3em;
+    height: 34px;
+    width: 34px;
+    border-radius: 5px;
     background-color: white;
+    box-shadow: var(--box-shadow2);
 }
 .new-game-popup {
     background-color: white;
     position: absolute;
-    left: 0;
     top: 0;
-    height: 100%;
-    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    border-radius: 0.6em;
+    border-radius: 15px;
+}
+
+.new-game-popup h2 {
+    text-align: center;
+}
+
+#new-game-button {
+    all: unset;
+    background-color: var(--secondary-color);
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 2px solid black;
+    cursor: pointer;
+    box-shadow: var(--box-shadow2);
+    transition: 0.3s ease all;
+}
+
+#new-game-button:hover {
+    box-shadow: none;
+    background-color: white;
+}
+
+.letter-container.hide {
+    height: 0;
 }
 .hide {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
 }
 #hidden-word {
     display: flex;
     justify-content: center;
-    font-size: 1.8em;
-    margin: 0.6em 0 1.2em 0;
+    font-size: 40px;
+    margin: 15px 0;
+    height: 0;
+    opacity: 0;
+    transition-delay: 0.5s;
+    transition: 0.5s ease all;
+}
+#hidden-word.active {
+    opacity: 1;
+    height: 50px;
 }
 
 canvas {
     display: block;
     margin: auto;
-    border: 1px solid black;
 }
