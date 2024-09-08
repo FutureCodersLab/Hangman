@@ -15,10 +15,9 @@ let count = 0;
 let chosenWord = "";
 
 const options = document.getElementById("options");
-const letterContainer = document.getElementById("letter-container");
-const newGameContainer = document.getElementById("new-game-container");
-const newGameButton = document.getElementById("new-game-button");
-const resultText = document.getElementById("result-text");
+const letterContainer = document.querySelector(".letter-container");
+const newGamePopup = document.querySelector(".new-game-popup");
+const newGameButton = newGamePopup.querySelector("button");
 
 document.addEventListener("DOMContentLoaded", () => {
     displayOptions();
@@ -122,7 +121,7 @@ const displayResult = (isWin) => {
 
 const disableGameControls = () => {
     document.querySelector(".letter-container").style.pointerEvents = "none";
-    setTimeout(() => newGameContainer.classList.remove("hide"), 500);
+    setTimeout(() => newGamePopup.classList.remove("hide"), 500);
 };
 
 const drawMan = (count) => {
@@ -150,7 +149,7 @@ const resetGame = () => {
     options.innerHTML = "";
     letterContainer.innerHTML = "";
     letterContainer.classList.add("hide");
-    newGameContainer.classList.add("hide");
+    newGamePopup.classList.add("hide");
 
     clearCanvas();
 
