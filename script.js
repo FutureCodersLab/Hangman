@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const displayCategories = () => {
+    console.log(categories);
     Object.keys(categories).forEach((category) => {
         const button = document.createElement("button");
         button.className = "category";

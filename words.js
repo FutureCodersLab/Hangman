@@ -1,6 +1,6 @@
 export const alphabetLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-export const options = {
+export const categories = {
     fruits: [
         "Apple",
         "Banana",
