@@ -49,7 +49,7 @@ export const drawInitialStructure = () => {
     drawLine(70, 10, 70, 20); // Rope
 };
 
-export const clearCanvas = () => {
+const clearCanvas = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.beginPath();
 };

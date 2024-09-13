@@ -8,18 +8,18 @@
         <script type="module" src="script.js" defer></script>
     </head>
     <body>
-        <div class="container">
+        <div id="container">
             <h3>Please Select An Option</h3>
-            <div id="options"></div>
-            <div class="letter-container hide"></div>
+            <div id="category-container"></div>
+            <div class="alphabet-container"></div>
             <div id="hidden-word"></div>
-            <canvas id="canvas"></canvas>
-            <div class="new-game-popup hide">
-                <div id="result-text">
+            <canvas></canvas>
+            <div class="new-game-popup">
+                <div id="results-container">
                     <h2></h2>
                     <p></p>
                 </div>
-                <button>New Game</button>
+                <button id="new-game-button">New Game</button>
             </div>
         </div>
     </body>
