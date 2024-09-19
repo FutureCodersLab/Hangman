@@ -1,4 +1,5 @@
 import { categories, alphabetLetters } from "./words.js";
+import { blastConfetti } from "./confetti.js";
 import {
     drawBody,
     drawHead,
@@ -116,7 +117,11 @@ const displayResult = (isWin) => {
     const p = document.querySelector("#results-container p");
     p.textContent = `The chosen word was ${chosenWord}`;
 
-    setTimeout(() => newGamePopup.classList.add("active"), 500);
+    setTimeout(() => {
+        newGamePopup.classList.add("active");
+        if (isWin) blastConfetti();
+    }, 500);
+
     categoryContainer.style.pointerEvents = "none";
 };
 
