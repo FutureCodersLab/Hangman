@@ -161,18 +161,13 @@ canvas {
         padding: 7px 12px;
     }
 
-    .alphabet-container.active {
-        height: 120px;
-        opacity: 1;
-        pointer-events: all;
-    }
-
     .alphabet-container button {
         height: 28px;
         width: 28px;
     }
 
     #hidden-word {
+        margin-top: 20px;
         font-size: 2.2rem;
     }
 
