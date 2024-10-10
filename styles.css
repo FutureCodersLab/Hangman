@@ -91,7 +91,7 @@ h3 {
 }
 
 .alphabet-container.active {
-    height: 120px;
+    height: 150px;
     opacity: 1;
     pointer-events: all;
 }
@@ -161,12 +161,27 @@ canvas {
         padding: 7px 12px;
     }
 
+    .alphabet-container.active {
+        height: 120px;
+        opacity: 1;
+        pointer-events: all;
+    }
+
     .alphabet-container button {
         height: 28px;
         width: 28px;
     }
 
     #hidden-word {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+    }
+
+    .new-game-popup {
+        flex-wrap: wrap;
+    }
+    .new-game-popup p {
+        text-align: center;
+        font-size: 18px;
+        margin-top: 20px;
     }
 }
