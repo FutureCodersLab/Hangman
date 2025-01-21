@@ -45,7 +45,9 @@ const selectCategory = (selectedCategory) => {
 };
 
 const createAlphabetButtons = () => {
-    const alphabet = [...alphabetLetters];
+    const alphabet = alphabetLetters.split("");
+
+    console.log(alphabet);
     alphabet.forEach((letter) => {
         const button = document.createElement("button");
         button.className = "letter";
