@@ -46,6 +46,7 @@ const selectCategory = (selectedCategory) => {
         const wordsArray = categories[selectedCategory];
         const randomIndex = Math.floor(Math.random() * wordsArray.length);
         chosenWord = wordsArray[randomIndex].toUpperCase();
+        console.log(chosenWord);
     }
     const hiddenWord = document.getElementById("hidden-word");
     hiddenWord.textContent = "";
@@ -58,7 +59,7 @@ const selectCategory = (selectedCategory) => {
 };
 
 const createAlphabetButtons = () => {
-    const alphabet = [...alphabetLetters];
+    const alphabet = alphabetLetters.split("");
     alphabet.forEach((letter) => {
         const button = document.createElement("button");
         button.className = "letter";
@@ -70,7 +71,7 @@ const createAlphabetButtons = () => {
 
 const selectLetter = (e) => {
     const selectedLetter = e.target.textContent;
-    const chosenWordArray = [...chosenWord];
+    const chosenWordArray = chosenWord.split("");
     if (chosenWordArray.includes(selectedLetter)) {
         revealLetters(chosenWordArray, selectedLetter);
         if (lettersGuessed === chosenWordArray.length) {
