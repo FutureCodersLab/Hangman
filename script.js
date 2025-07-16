@@ -42,12 +42,14 @@ const selectCategory = (selectedCategory) => {
             ? button.classList.add("active")
             : (button.disabled = true);
     });
+
     if (!chosenWord) {
         const wordsArray = categories[selectedCategory];
         const randomIndex = Math.floor(Math.random() * wordsArray.length);
         chosenWord = wordsArray[randomIndex].toUpperCase();
         console.log(chosenWord);
     }
+
     const hiddenWord = document.getElementById("hidden-word");
     hiddenWord.textContent = "";
     hiddenWord.classList.add("active");
@@ -70,11 +72,12 @@ const createAlphabetButtons = () => {
 };
 
 const selectLetter = (e) => {
-    const selectedLetter = e.target.textContent;
-    const chosenWordArray = chosenWord.split("");
-    if (chosenWordArray.includes(selectedLetter)) {
-        revealLetters(chosenWordArray, selectedLetter);
-        if (lettersGuessed === chosenWordArray.length) {
+    const letterButton = e.target;
+    const selectedLetter = letterButton.textContent;
+
+    if (chosenWord.includes(selectedLetter)) {
+        revealLetters(selectedLetter);
+        if (lettersGuessed === chosenWord.length) {
             displayResult(true);
         }
     } else {
@@ -84,14 +87,18 @@ const selectLetter = (e) => {
             displayResult(false);
         }
     }
-    e.target.disabled = true;
+
+    letterButton.disabled = true;
 };
 
-const revealLetters = (chosenWordArray, selectedLetter) => {
+const revealLetters = (selectedLetter) => {
     const dashes = document.querySelectorAll(".dashes");
+    const chosenWordArray = chosenWord.split("");
+
     chosenWordArray.forEach((letter, index) => {
         if (letter === selectedLetter) {
-            dashes[index].textContent = selectedLetter;
+            const dash = dashes[index];
+            dash.textContent = selectedLetter;
             lettersGuessed++;
         }
     });
@@ -106,9 +113,9 @@ const drawMan = () => {
         drawLeftLeg,
         drawRightLeg,
     ];
-    if (incorrectGuessesCount <= drawFunctions.length) {
-        drawFunctions[incorrectGuessesCount - 1]();
-    }
+
+    const drawStep = drawFunctions[incorrectGuessesCount - 1];
+    drawStep();
 };
 
 const displayResult = (isWin) => {
@@ -122,8 +129,6 @@ const displayResult = (isWin) => {
         newGamePopup.classList.add("active");
         if (isWin) blastConfetti();
     }, 500);
-
-    categoryContainer.style.pointerEvents = "none";
 };
 
 const newGame = () => {
@@ -131,19 +136,16 @@ const newGame = () => {
     incorrectGuessesCount = 0;
     chosenWord = "";
 
-    document.getElementById("hidden-word").textContent = "";
-
+    const hiddenWord = document.getElementById("hidden-word");
+    hiddenWord.innerHTML = "";
     categoryContainer.innerHTML = "";
     alphabetContainer.innerHTML = "";
-    categoryContainer.style.pointerEvents = "all";
+
+    hiddenWord.classList.remove("active");
     alphabetContainer.classList.remove("active");
     newGamePopup.classList.remove("active");
 
     displayCategories();
     createAlphabetButtons();
     drawInitialStructure();
-
-    document
-        .querySelectorAll(".category")
-        .forEach((button) => (button.disabled = false));
 };
