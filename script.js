@@ -127,7 +127,9 @@ const displayResult = (isWin) => {
 
     setTimeout(() => {
         newGamePopup.classList.add("active");
-        if (isWin) blastConfetti();
+        if (isWin) {
+            blastConfetti();
+        }
     }, 500);
 };
 
