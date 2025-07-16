@@ -15,6 +15,7 @@ let lettersGuessed = 0;
 let incorrectGuessesCount = 0;
 
 const categoryContainer = document.getElementById("category-container");
+const hiddenWord = document.getElementById("hidden-word");
 const alphabetContainer = document.querySelector(".alphabet-container");
 const newGamePopup = document.querySelector(".new-game-popup");
 const newGameButton = document.getElementById("new-game-button");
@@ -27,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const displayCategories = () => {
-    Object.keys(categories).forEach((category) => {
+    const categoriesArray = Object.keys(categories);
+    categoriesArray.forEach((category) => {
         const button = document.createElement("button");
         button.className = "category";
         button.textContent = category;
@@ -37,21 +39,24 @@ const displayCategories = () => {
 };
 
 const selectCategory = (selectedCategory) => {
-    document.querySelectorAll(".category").forEach((button) => {
-        button.textContent.toLowerCase() === selectedCategory
-            ? button.classList.add("active")
-            : (button.disabled = true);
+    const categoryButtons = document.querySelectorAll(".category");
+    categoryButtons.forEach((button) => {
+        const isSelected = button.textContent === selectedCategory;
+
+        if (isSelected) {
+            button.classList.add("active");
+        } else {
+            button.disabled = true;
+        }
     });
 
     if (!chosenWord) {
         const wordsArray = categories[selectedCategory];
         const randomIndex = Math.floor(Math.random() * wordsArray.length);
-        chosenWord = wordsArray[randomIndex].toUpperCase();
+        chosenWord = wordsArray[randomIndex];
         console.log(chosenWord);
     }
 
-    const hiddenWord = document.getElementById("hidden-word");
-    hiddenWord.textContent = "";
     hiddenWord.classList.add("active");
     hiddenWord.innerHTML = chosenWord
         .split("")
@@ -123,7 +128,7 @@ const displayResult = (isWin) => {
     h2.textContent = isWin ? "You Win" : "You Lose";
 
     const p = document.querySelector("#results-container p");
-    p.textContent = `The chosen word was ${chosenWord}`;
+    p.textContent = `The chosen word was ${chosenWord.toUpperCase()}`;
 
     setTimeout(() => {
         newGamePopup.classList.add("active");
@@ -138,7 +143,6 @@ const newGame = () => {
     incorrectGuessesCount = 0;
     chosenWord = "";
 
-    const hiddenWord = document.getElementById("hidden-word");
     hiddenWord.innerHTML = "";
     categoryContainer.innerHTML = "";
     alphabetContainer.innerHTML = "";
