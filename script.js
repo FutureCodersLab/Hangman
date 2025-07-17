@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     createAlphabetButtons();
     drawInitialStructure();
 });
+
 const displayCategories = () => {
     const categoriesArray = Object.keys(categories);
     categoriesArray.forEach((category) => {
@@ -22,6 +23,7 @@ const displayCategories = () => {
         categoryContainer.appendChild(button);
     });
 };
+
 const selectCategory = (selectedCategory) => {
     const categoryButtons = document.querySelectorAll(".category");
     categoryButtons.forEach((button) => {
