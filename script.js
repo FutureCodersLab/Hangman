@@ -1,4 +1,4 @@
-import { categories, alphabetLetters } from "./words.js";
+import { categories, alphabetLetters, dashElement } from "./words.js";
 import { blastConfetti } from "./confetti.js";
 import {
     drawBody,
@@ -60,7 +60,7 @@ const selectCategory = (selectedCategory) => {
     hiddenWord.classList.add("active");
     hiddenWord.innerHTML = chosenWord
         .split("")
-        .map(() => '<span class="dashes">-</span>')
+        .map(() => dashElement)
         .join("");
     alphabetContainer.classList.add("active");
 };

@@ -1,3 +1,5 @@
+export const dashElement = '<span class="dashes">-</span>';
+
 export const alphabetLetters = "abcdefghijklmnopqrstuvwxyz";
 
 export const categories = {
