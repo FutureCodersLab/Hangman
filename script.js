@@ -36,12 +36,10 @@ const selectCategory = (selectedCategory) => {
         }
     });
 
-    if (!chosenWord) {
-        const wordsArray = categories[selectedCategory];
-        const randomIndex = Math.floor(Math.random() * wordsArray.length);
-        chosenWord = wordsArray[randomIndex];
-        console.log(chosenWord);
-    }
+    const wordsArray = categories[selectedCategory];
+    const randomIndex = Math.floor(Math.random() * wordsArray.length);
+    chosenWord = wordsArray[randomIndex];
+    console.log(chosenWord);
 
     hiddenWord.classList.add("active");
     hiddenWord.innerHTML = chosenWord
