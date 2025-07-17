@@ -134,7 +134,7 @@ canvas {
 }
 
 .new-game-popup h2 {
-    text-align: center;
+    margin: 0;
 }
 
 #new-game-button {
