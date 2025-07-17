@@ -122,10 +122,10 @@ const drawMan = () => {
 };
 
 const displayResult = (isWin) => {
-    const h2 = document.querySelector("#results-container h2");
+    const h2 = document.querySelector(".new-game-popup h2");
     h2.textContent = isWin ? "You Win" : "You Lose";
 
-    const p = document.querySelector("#results-container p");
+    const p = document.querySelector(".new-game-popup p");
     p.textContent = `The chosen word was ${chosenWord.toUpperCase()}`;
 
     setTimeout(() => {
