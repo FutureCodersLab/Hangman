@@ -34,8 +34,6 @@ const selectCategory = (selectedCategory) => {
         }
     });
 
-    hiddenWord.textContent = "";
-
     if (!chosenWord) {
         const wordsArray = categories[selectedCategory];
         const randomIndex = Math.floor(Math.random() * wordsArray.length);
