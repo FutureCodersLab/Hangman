@@ -154,11 +154,6 @@ canvas {
 }
 
 @media (max-width: 768px) {
-    #container {
-        width: 80vw;
-        padding: 15px;
-    }
-
     #category-container button {
         padding: 7px 12px;
     }
