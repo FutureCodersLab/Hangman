@@ -1,7 +1,7 @@
 import { categories, alphabetLetters, dashElement } from "./words.js";
 import { drawInitialStructure } from "./canvas.js";
 
-let chosenWord = "";
+let secretWord;
 
 const categoryContainer = document.getElementById("category-container");
 const hiddenWord = document.getElementById("hidden-word");
@@ -38,11 +38,11 @@ const selectCategory = (selectedCategory) => {
 
     const wordsArray = categories[selectedCategory];
     const randomIndex = Math.floor(Math.random() * wordsArray.length);
-    chosenWord = wordsArray[randomIndex];
-    console.log(chosenWord);
+    secretWord = wordsArray[randomIndex];
+    console.log(secretWord);
 
     hiddenWord.classList.add("active");
-    hiddenWord.innerHTML = chosenWord
+    hiddenWord.innerHTML = secretWord
         .split("")
         .map(() => dashElement)
         .join("");
