@@ -10,9 +10,9 @@ import {
     drawRightLeg,
 } from "./canvas.js";
 
-let chosenWord;
-let lettersGuessed = 0;
-let incorrectGuessesCount = 0;
+let secretWord;
+let correctGuesses = 0;
+let wrongGuesses = 0;
 
 const categoryContainer = document.getElementById("category-container");
 const hiddenWord = document.getElementById("hidden-word");
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     displayCategories();
     createAlphabetButtons();
     drawInitialStructure();
-    newGameButton.addEventListener("click", newGame);
+    newGameButton.addEventListener("click", startNewGame);
 });
 
 const displayCategories = () => {
@@ -52,11 +52,10 @@ const selectCategory = (selectedCategory) => {
 
     const wordsArray = categories[selectedCategory];
     const randomIndex = Math.floor(Math.random() * wordsArray.length);
-    chosenWord = wordsArray[randomIndex];
-    console.log(chosenWord);
+    secretWord = wordsArray[randomIndex];
 
     hiddenWord.classList.add("active");
-    hiddenWord.innerHTML = chosenWord
+    hiddenWord.innerHTML = secretWord
         .split("")
         .map(() => dashElement)
         .join("");
@@ -76,17 +75,17 @@ const createAlphabetButtons = () => {
 
 const selectLetter = (e) => {
     const letterButton = e.target;
-    const selectedLetter = letterButton.textContent;
+    const chosenLetter = letterButton.textContent;
 
-    if (chosenWord.includes(selectedLetter)) {
-        revealLetters(selectedLetter);
-        if (lettersGuessed === chosenWord.length) {
+    if (secretWord.includes(chosenLetter)) {
+        revealLetters(chosenLetter);
+        if (correctGuesses === secretWord.length) {
             displayResult(true);
         }
     } else {
-        incorrectGuessesCount++;
-        drawMan();
-        if (incorrectGuessesCount === 6) {
+        wrongGuesses++;
+        drawNextPart();
+        if (wrongGuesses === 6) {
             displayResult(false);
         }
     }
@@ -94,20 +93,20 @@ const selectLetter = (e) => {
     letterButton.disabled = true;
 };
 
-const revealLetters = (selectedLetter) => {
+const revealLetters = (chosenLetter) => {
     const dashes = document.querySelectorAll(".dashes");
-    const chosenWordArray = chosenWord.split("");
+    const secretWordArray = secretWord.split("");
 
-    chosenWordArray.forEach((letter, index) => {
-        if (letter === selectedLetter) {
+    secretWordArray.forEach((letter, index) => {
+        if (letter === chosenLetter) {
             const dash = dashes[index];
-            dash.textContent = selectedLetter;
-            lettersGuessed++;
+            dash.textContent = chosenLetter;
+            correctGuesses++;
         }
     });
 };
 
-const drawMan = () => {
+const drawNextPart = () => {
     const drawFunctions = [
         drawHead,
         drawBody,
@@ -117,7 +116,7 @@ const drawMan = () => {
         drawRightLeg,
     ];
 
-    const drawStep = drawFunctions[incorrectGuessesCount - 1];
+    const drawStep = drawFunctions[wrongGuesses - 1];
     drawStep();
 };
 
@@ -126,7 +125,7 @@ const displayResult = (isWin) => {
     h2.textContent = isWin ? "You Win" : "You Lose";
 
     const p = document.querySelector(".new-game-popup p");
-    p.textContent = `The chosen word was ${chosenWord.toUpperCase()}`;
+    p.textContent = `The chosen word was ${secretWord.toUpperCase()}`;
 
     setTimeout(() => {
         newGamePopup.classList.add("active");
@@ -136,10 +135,10 @@ const displayResult = (isWin) => {
     }, 500);
 };
 
-const newGame = () => {
-    lettersGuessed = 0;
-    incorrectGuessesCount = 0;
-    chosenWord = "";
+const startNewGame = () => {
+    correctGuesses = 0;
+    wrongGuesses = 0;
+    secretWord = "";
 
     hiddenWord.innerHTML = "";
     categoryContainer.innerHTML = "";
