@@ -1,7 +1,7 @@
 import { categories, alphabetLetters, dashElement } from "./words.js";
 import { drawInitialStructure } from "./canvas.js";
 
-let secretWord;
+let secretWord = "";
 
 const categoryContainer = document.getElementById("category-container");
 const hiddenWord = document.getElementById("hidden-word");
