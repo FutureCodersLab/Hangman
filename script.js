@@ -1,7 +1,7 @@
 import { categories, alphabetLetters, dashElement } from "./words.js";
 import { drawInitialStructure } from "./canvas.js";
 
-let secretWord;
+let secretWord = "";
 
 const categoryContainer = document.getElementById("category-container");
 const hiddenWord = document.getElementById("hidden-word");
@@ -42,10 +42,11 @@ const selectCategory = (selectedCategory) => {
     console.log(secretWord);
 
     hiddenWord.classList.add("active");
-    hiddenWord.innerHTML = secretWord
-        .split("")
-        .map(() => dashElement)
-        .join("");
+
+    const letters = secretWord.split("");
+    const dashes = letters.map(() => dashElement);
+    hiddenWord.innerHTML = dashes.join("");
+
     alphabetContainer.classList.add("active");
 };
 
