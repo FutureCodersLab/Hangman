@@ -10,7 +10,7 @@ import {
     drawRightLeg,
 } from "./canvas.js";
 
-let secretWord;
+let secretWord = "";
 let correctGuesses = 0;
 let wrongGuesses = 0;
 
@@ -55,10 +55,11 @@ const selectCategory = (selectedCategory) => {
     secretWord = wordsArray[randomIndex];
 
     hiddenWord.classList.add("active");
-    hiddenWord.innerHTML = secretWord
-        .split("")
-        .map(() => dashElement)
-        .join("");
+
+    const letters = secretWord.split("");
+    const dashes = letters.map(() => dashElement);
+    hiddenWord.innerHTML = dashes.join("");
+
     alphabetContainer.classList.add("active");
 };
 
@@ -94,10 +95,10 @@ const selectLetter = (e) => {
 };
 
 const revealLetters = (chosenLetter) => {
-    const dashes = document.querySelectorAll(".dashes");
-    const secretWordArray = secretWord.split("");
+    const dashes = document.querySelectorAll(".dash");
+    const secretWordLetters = secretWord.split("");
 
-    secretWordArray.forEach((letter, index) => {
+    secretWordLetters.forEach((letter, index) => {
         if (letter === chosenLetter) {
             const dash = dashes[index];
             dash.textContent = chosenLetter;
