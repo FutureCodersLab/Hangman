@@ -1,4 +1,4 @@
-export const dashElement = '<span class="dashes">-</span>';
+export const dashElement = '<span class="dash">-</span>';
 
 export const alphabetLetters = "abcdefghijklmnopqrstuvwxyz";
 
