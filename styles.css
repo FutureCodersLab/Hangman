@@ -8,6 +8,30 @@
     --box-shadow2: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Poppins";
+    background-color: var(--main-color);
+}
+
+#container {
+    background-color: white;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+h3 {
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     #category-container button {
         padding: 7px 12px;
